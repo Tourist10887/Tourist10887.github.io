@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鹞石中学表白墙 - 注册</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #ff7e5f;
+            color: white;
+            text-align: center;
+            padding: 25px 20px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .form-container {
+            padding: 25px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus {
+            border-color: #ff7e5f;
+            outline: none;
+        }
+        
+        .format-hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #ff7e5f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #e86f51;
+        }
+        
+        .links {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .links a {
+            color: #ff7e5f;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .links a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+        
+        .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success {
+            color: #2ecc71;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>鹞石中学表白墙</h1>
+            <p>注册新账号</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="input-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" placeholder="例如：2025届904班周文博同学">
+                <div class="format-hint">格式必须为：XX届XX班XX同学</div>
+                <div class="error" id="username-error"></div>
+            </div>
+            
+            <div class="input-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" placeholder="请设置登录密码">
+                <div class="error" id="password-error"></div>
+            </div>
+            
+            <div class="input-group">
+                <label for="confirm-password">确认密码</label>
+                <input type="password" id="confirm-password" placeholder="请再次输入密码">
+                <div class="error" id="confirm-password-error"></div>
+            </div>
+            
+            <button class="btn" id="register-btn">注册</button>
+            
+            <div class="links">
+                <a href="login.html">已有账号？立即登录</a>
+            </div>
+            
+            <div class="success" id="register-success">注册成功！正在跳转到登录页面...</div>
+        </div>
+        
+        <div class="footer">
+            <p>by 2025届904班周文博同学，QQ:3637457102</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerBtn = document.getElementById('register-btn');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirm-password');
+            const usernameError = document.getElementById('username-error');
+            const passwordError = document.getElementById('password-error');
+            const confirmPasswordError = document.getElementById('confirm-password-error');
+            const successMsg = document.getElementById('register-success');
+            
+            // 用户名格式验证
+            function validateUsernameFormat(username) {
+                const pattern = /^\d{4}届\d{1,2}班.+同学$/;
+                return pattern.test(username);
+            }
+            
+            registerBtn.addEventListener('click', function() {
+                let isValid = true;
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
+                const confirmPassword = confirmPasswordInput.value.trim();
+                
+                // 验证用户名
+                if (username === '') {
+                    usernameError.textContent = '用户名不能为空';
+                    usernameError.style.display = 'block';
+                    isValid = false;
+                } else if (!validateUsernameFormat(username)) {
+                    usernameError.textContent = '用户名格式不正确，应为：XX届XX班XX同学或者该用户已存在';
+                    usernameError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    usernameError.style.display = 'none';
+                }
+                
+                // 验证密码
+                if (password === '') {
+                    passwordError.textContent = '密码不能为空';
+                    passwordError.style.display = 'block';
+                    isValid = false;
+                } else if (password.length < 6) {
+                    passwordError.textContent = '密码长度不能少于6位';
+                    passwordError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    passwordError.style.display = 'none';
+                }
+                
+                // 验证确认密码
+                if (confirmPassword === '') {
+                    confirmPasswordError.textContent = '请确认密码';
+                    confirmPasswordError.style.display = 'block';
+                    isValid = false;
+                } else if (confirmPassword !== password) {
+                    confirmPasswordError.textContent = '两次输入的密码不一致';
+                    confirmPasswordError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    confirmPasswordError.style.display = 'none';
+                }
+                
+                if (isValid) {
+                    // 检查用户名是否已存在
+                    const userKey = 'user_' + username;
+                    if (localStorage.getItem(userKey)) {
+                        usernameError.textContent = '该用户名已被注册';
+                        usernameError.style.display = 'block';
+                        return;
+                    }
+                    
+                    // 保存用户信息
+                    const userData = {
+                        username: username,
+                        password: password,
+                        role: 'user',
+                        joinDate: new Date().toISOString(),
+                        muted: false
+                    };
+                    
+                    localStorage.setItem(userKey, JSON.stringify(userData));
+                    
+                    // 添加到用户列表
+                    let users = JSON.parse(localStorage.getItem('user_list') || '[]');
+                    users.push(username);
+                    localStorage.setItem('user_list', JSON.stringify(users));
+                    
+                    // 显示成功消息
+                    successMsg.style.display = 'block';
+                    
+                    // 3秒后跳转到登录页面
+                    setTimeout(function() {
+                        window.location.href = 'login.html';
+                    }, 3000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鹞石中学表白墙 - 发布新帖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo h1 {
+            font-size: 20px;
+        }
+        
+        .logo p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-primary {
+            background: #ff7e5f;
+        }
+        
+        .btn-primary:hover {
+            background: #e86f51;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        
+        .post-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            color: #333;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .post-content {
+            width: 100%;
+            min-height: 150px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 16px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        
+        .post-content:focus {
+            border-color: #6a11cb;
+            outline: none;
+        }
+        
+        .image-upload {
+            margin-top: 20px;
+        }
+        
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+            margin-bottom: 15px;
+        }
+        
+        .upload-area:hover {
+            border-color: #6a11cb;
+        }
+        
+        .upload-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: #6a11cb;
+        }
+        
+        .upload-text {
+            color: #666;
+        }
+        
+        .upload-text span {
+            color: #6a11cb;
+            text-decoration: underline;
+        }
+        
+        .image-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .preview-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 120px;
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 0, 0, 0.7);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .post-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .option-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .checkbox-group input {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #666;
+            margin-top: 40px;
+        }
+        
+        .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success {
+            color: #2ecc71;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .post-options {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .action-buttons {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>鹞石中学表白墙</h1>
+                <p>发布新帖子</p>
+            </div>
+            <div class="user-actions">
+                <button class="btn" onclick="window.location.href='index.html'">返回首页</button>
+                <button class="btn" onclick="window.location.href='profile.html'">个人资料</button>
+                <button class="btn btn-primary" id="logout-btn">退出登录</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="post-card">
+            <h2 class="card-title">发布新内容</h2>
+            
+            <div class="input-group">
+                <label for="post-content">内容</label>
+                <textarea id="post-content" class="post-content" placeholder="分享你的心声..."></textarea>
+                <div class="error" id="content-error"></div>
+            </div>
+            
+            <div class="image-upload">
+                <label>添加图片（可选）</label>
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-icon">📷</div>
+                    <p class="upload-text">点击上传图片或<span>拖拽图片到这里</span></p>
+                    <input type="file" id="file-input" accept="image/*" multiple style="display: none;">
+                </div>
+                
+                <div class="image-preview" id="image-preview">
+                    <!-- 图片预览将在这里显示 -->
+                </div>
+            </div>
+            
+            <div class="post-options">
+                <div class="option-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="anonymous">
+                        <label for="anonymous">匿名发布</label>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn" onclick="window.location.href='index.html'">取消</button>
+                    <button class="btn btn-primary" id="publish-btn">发布</button>
+                </div>
+            </div>
+            
+            <div class="success" id="publish-success">发布成功！正在跳转到首页...</div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>by 2025届904班周文博同学，QQ:3637457102</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const contentInput = document.getElementById('post-content');
+            const uploadArea = document.getElementById('upload-area');
+            const fileInput = document.getElementById('file-input');
+            const imagePreview = document.getElementById('image-preview');
+            const publishBtn = document.getElementById('publish-btn');
+            const contentError = document.getElementById('content-error');
+            const successMsg = document.getElementById('publish-success');
+            const logoutBtn = document.getElementById('logout-btn');
+            
+            // 检查登录状态
+            if (!currentUser.username) {
+                alert('请先登录！');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // 检查是否被禁言
+            if (currentUser.muted) {
+                contentInput.disabled = true;
+                publishBtn.disabled = true;
+                contentInput.placeholder = '您已被禁言，无法发布帖子！';
+                alert('您已被禁言，无法发布帖子！');
+            }
+            
+            // 退出登录
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            });
+            
+            // 点击上传区域触发文件选择
+            uploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            // 拖拽上传功能
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#6a11cb';
+                uploadArea.style.backgroundColor = '#f0f0f0';
+            });
+            
+            uploadArea.addEventListener('dragleave', function() {
+                uploadArea.style.borderColor = '#ddd';
+                uploadArea.style.backgroundColor = 'transparent';
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#ddd';
+                uploadArea.style.backgroundColor = 'transparent';
+                
+                if (e.dataTransfer.files.length > 0) {
+                    handleFiles(e.dataTransfer.files);
+                }
+            });
+            
+            // 文件选择处理
+            fileInput.addEventListener('change', function() {
+                if (fileInput.files.length > 0) {
+                    handleFiles(fileInput.files);
+                }
+            });
+            
+            // 处理选择的文件
+            function handleFiles(files) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    
+                    // 检查文件类型
+                    if (!file.type.startsWith('image/')) {
+                        alert('请只上传图片文件！');
+                        continue;
+                    }
+                    
+                    // 检查文件大小（限制为5MB）
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('图片大小不能超过5MB！');
+                        continue;
+                    }
+                    
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        const previewItem = document.createElement('div');
+                        previewItem.className = 'preview-item';
+                        
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        
+                        const removeBtn = document.createElement('div');
+                        removeBtn.className = 'remove-image';
+                        removeBtn.innerHTML = '×';
+                        removeBtn.addEventListener('click', function() {
+                            previewItem.remove();
+                        });
+                        
+                        previewItem.appendChild(img);
+                        previewItem.appendChild(removeBtn);
+                        imagePreview.appendChild(previewItem);
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            }
+            
+            // 发布帖子
+            publishBtn.addEventListener('click', function() {
+                const content = contentInput.value.trim();
+                
+                // 验证内容
+                if (content === '') {
+                    contentError.textContent = '帖子内容不能为空';
+                    contentError.style.display = 'block';
+                    return;
+                }
+                
+                contentError.style.display = 'none';
+                
+                // 获取图片数据
+                const imagePreviews = imagePreview.querySelectorAll('.preview-item img');
+                const images = [];
+                
+                imagePreviews.forEach(preview => {
+                    images.push(preview.src);
+                });
+                
+                // 创建新帖子
+                const newPost = {
+                    id: Date.now().toString(),
+                    author: document.getElementById('anonymous').checked ? '匿名用户' : currentUser.username,
+                    content: content,
+                    timestamp: new Date().toISOString(),
+                    likes: 0,
+                    comments: [],
+                    isFeatured: false,
+                    images: images
+                };
+                
+                // 保存帖子
+                let posts = JSON.parse(localStorage.getItem('posts') || '[]');
+                posts.unshift(newPost);
+                localStorage.setItem('posts', JSON.stringify(posts));
+                
+                // 显示成功消息
+                successMsg.style.display = 'block';
+                
+                // 3秒后跳转到首页
+                setTimeout(function() {
+                    window.location.href = 'index.html';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

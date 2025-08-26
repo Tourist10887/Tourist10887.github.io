@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鹞石中学表白墙 - 个人资料</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo h1 {
+            font-size: 20px;
+        }
+        
+        .logo p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-primary {
+            background: #ff7e5f;
+        }
+        
+        .btn-primary:hover {
+            background: #e86f51;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+        }
+        
+        .profile-card, .stats-card, .posts-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .profile-card {
+            text-align: center;
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+        }
+        
+        .profile-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .profile-info {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .profile-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: white;
+        }
+        
+        .badge-admin {
+            background: #6a11cb;
+        }
+        
+        .badge-muted {
+            background: #e74c3c;
+        }
+        
+        .profile-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #6a11cb;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .user-posts {
+            margin-top: 20px;
+        }
+        
+        .post-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .post-item:last-child {
+            border-bottom: none;
+        }
+        
+        .post-content {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 12px;
+        }
+        
+        .admin-panel {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .admin-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #6a11cb;
+        }
+        
+        .admin-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .admin-action {
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .admin-action:hover {
+            background: #eee;
+        }
+        
+        .action-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #666;
+            margin-top: 40px;
+        }
+        
+        .tab-container {
+            margin-bottom: 20px;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 2px solid #6a11cb;
+            color: #6a11cb;
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px 0;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-stats {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .admin-actions {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>鹞石中学表白墙</h1>
+                <p>个人资料</p>
+            </div>
+            <div class="user-actions">
+                <button class="btn" onclick="window.location.href='index.html'">返回首页</button>
+                <button class="btn btn-primary" id="logout-btn">退出登录</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="sidebar">
+            <div class="profile-card">
+                <div class="profile-avatar" id="user-avatar">Y</div>
+                <h2 class="profile-name" id="profile-name">用户名</h2>
+                <p class="profile-info" id="profile-role">普通用户</p>
+                
+                <div class="profile-badges" id="profile-badges">
+                    <!-- 徽章将在这里动态生成 -->
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="posts-count">0</div>
+                        <div class="stat-label">帖子</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="likes-count">0</div>
+                        <div class="stat-label">获赞</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="comments-count">0</div>
+                        <div class="stat-label">评论</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="featured-count">0</div>
+                        <div class="stat-label">精华</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-card">
+                <h3 class="card-title">账号信息</h3>
+                <div class="info-item">
+                    <strong>注册时间：</strong><span id="join-date">2023-10-01</span>
+                </div>
+                <div class="info-item">
+                    <strong>用户ID：</strong><span id="user-id">2025届904班周文博同学</span>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-primary" style="width: 100%;" onclick="changePassword()">修改密码</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="tab-container">
+                <div class="tabs">
+                    <div class="tab active" data-tab="posts">我的帖子</div>
+                    <div class="tab" data-tab="likes">我的点赞</div>
+                    <div class="tab" data-tab="comments">我的评论</div>
+                </div>
+                
+                <div class="tab-content active" id="posts-tab">
+                    <div class="posts-card">
+                        <h3 class="card-title">我发布的帖子</h3>
+                        <div class="user-posts" id="user-posts">
+                            <!-- 用户帖子将在这里动态生成 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="likes-tab">
+                    <div class="posts-card">
+                        <h3 class="card-title">我点赞的帖子</h3>
+                        <div class="user-posts" id="user-likes">
+                            <!-- 用户点赞的帖子将在这里动态生成 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="comments-tab">
+                    <div class="posts-card">
+                        <h3 class="card-title">我评论的帖子</h3>
+                        <div class="user-posts" id="user-comments">
+                            <!-- 用户评论的帖子将在这里动态生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="admin-panel" style="display: none;">
+                <div class="admin-panel">
+                    <h3 class="admin-title">管理员面板</h3>
+                    <div class="admin-actions">
+                        <div class="admin-action" onclick="window.location.href='admin-users.html'">
+                            <div class="action-icon">👥</div>
+                            <div>用户管理</div>
+                        </div>
+                        <div class="admin-action" onclick="window.location.href='admin-posts.html'">
+                            <div class="action-icon">📝</div>
+                            <div>帖子管理</div>
+                        </div>
+                        <div class="admin-action" onclick="manageFeatured()">
+                            <div class="action-icon">⭐</div>
+                            <div>精华管理</div>
+                        </div>
+                        <div class="admin-action" onclick="manageMute()">
+                            <div class="action-icon">🔇</div>
+                            <div>禁言管理</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>by 2025届904班周文博同学，QQ:3637457102</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const logoutBtn = document.getElementById('logout-btn');
+            
+            // 检查登录状态
+            if (!currentUser.username) {
+                alert('请先登录！');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // 退出登录
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            });
+            
+            // 加载用户资料
+            loadProfile();
+            
+            // 标签切换功能
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有active类
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // 添加active类到当前标签
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab') + '-tab';
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // 显示管理员面板
+            if (currentUser.role === 'admin' || currentUser.role === 'superadmin') {
+                document.getElementById('admin-panel').style.display = 'block';
+            }
+        });
+        
+        // 加载用户资料
+        function loadProfile() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const userKey = 'user_' + currentUser.username;
+            const userData = JSON.parse(localStorage.getItem(userKey) || '{}');
+            const posts = JSON.parse(localStorage.getItem('posts') || '[]');
+            
+            // 设置用户基本信息
+            document.getElementById('user-avatar').textContent = currentUser.username.charAt(0);
+            document.getElementById('profile-name').textContent = currentUser.username;
+            document.getElementById('user-id').textContent = currentUser.username;
+            
+            // 设置用户角色
+            let roleText = '普通用户';
+            if (userData.role === 'admin') roleText = '管理员';
+            if (userData.role === 'superadmin') roleText = '超级管理员';
+            document.getElementById('profile-role').textContent = roleText;
+            
+            // 设置注册时间
+            if (userData.joinDate) {
+                document.getElementById('join-date').textContent = new Date(userData.joinDate).toLocaleDateString();
+            }
+            
+            // 设置徽章
+            const badgesContainer = document.getElementById('profile-badges');
+            badgesContainer.innerHTML = '';
+            
+            if (userData.role === 'admin' || userData.role === 'superadmin') {
+                const adminBadge = document.createElement('div');
+                adminBadge.className = 'badge badge-admin';
+                adminBadge.textContent = '管理员';
+                badgesContainer.appendChild(adminBadge);
+            }
+            
+            if (userData.muted) {
+                const mutedBadge = document.createElement('div');
+                mutedBadge.className = 'badge badge-muted';
+                mutedBadge.textContent = '已禁言';
+                badgesContainer.appendChild(mutedBadge);
+            }
+            
+            // 计算用户数据
+            let userPosts = posts.filter(post => post.author === currentUser.username);
+            let totalLikes = 0;
+            let totalComments = 0;
+            let featuredPosts = 0;
+            
+            userPosts.forEach(post => {
+                totalLikes += post.likes || 0;
+                totalComments += post.comments ? post.comments.length : 0;
+                if (post.isFeatured) featuredPosts++;
+            });
+            
+            // 更新统计数据
+            document.getElementById('posts-count').textContent = userPosts.length;
+            document.getElementById('likes-count').textContent = totalLikes;
+            document.getElementById('comments-count').textContent = totalComments;
+            document.getElementById('featured-count').textContent = featuredPosts;
+            
+            // 渲染用户帖子
+            renderUserPosts(userPosts);
+        }
+        
+        // 渲染用户帖子
+        function renderUserPosts(posts) {
+            const container = document.getElementById('user-posts');
+            container.innerHTML = '';
+            
+            if (posts.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #888; padding: 20px;">您还没有发布过帖子</p>';
+                return;
+            }
+            
+            posts.forEach(post => {
+                const postEl = document.createElement('div');
+                postEl.className = 'post-item';
+                
+                postEl.innerHTML = `
+                    <div class="post-content">${post.content}</div>
+                    <div class="post-meta">
+                        <span>${new Date(post.timestamp).toLocaleString()}</span>
+                        <span>${post.likes || 0} 赞 · ${post.comments ? post.comments.length : 0} 评论</span>
+                    </div>
+                `;
+                
+                container.appendChild(postEl);
+            });
+        }
+        
+        // 修改密码
+        function changePassword() {
+            const newPassword = prompt('请输入新密码：');
+            if (newPassword && newPassword.length >= 6) {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                const userKey = 'user_' + currentUser.username;
+                const userData = JSON.parse(localStorage.getItem(userKey) || '{}');
+                
+                userData.password = newPassword;
+                localStorage.setItem(userKey, JSON.stringify(userData));
+                
+                alert('密码修改成功！');
+            } else if (newPassword) {
+                alert('密码长度不能少于6位！');
+            }
+        }
+        
+        // 管理精华帖
+        function manageFeatured() {
+            alert('跳转到精华帖管理页面');
+            // 实际应用中这里会跳转到专门的管理页面
+        }
+        
+        // 管理禁言
+        function manageMute() {
+            alert('跳转到禁言管理页面');
+            // 实际应用中这里会跳转到专门的管理页面
+        }
+    </script>
+</body>
+</html>
