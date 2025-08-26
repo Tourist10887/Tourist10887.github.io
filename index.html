@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鹞石中学表白墙 - 主页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo h1 {
+            font-size: 20px;
+        }
+        
+        .logo p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-primary {
+            background: #ff7e5f;
+        }
+        
+        .btn-primary:hover {
+            background: #e86f51;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+        }
+        
+        .main-content {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            height: fit-content;
+        }
+        
+        .post-form {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .post-input {
+            width: 100%;
+            min-height: 80px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+        
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .icon-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .icon-btn:hover {
+            color: #6a11cb;
+        }
+        
+        .posts {
+            padding: 10px;
+        }
+        
+        .post {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .post:last-child {
+            border-bottom: none;
+        }
+        
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #6a11cb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .username {
+            font-weight: bold;
+        }
+        
+        .timestamp {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .post-content {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .post-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .post-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .post-stats {
+            display: flex;
+            gap: 15px;
+            color: #888;
+            font-size: 14px;
+        }
+        
+        .featured-badge {
+            background: #ff7e5f;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .admin-badge {
+            background: #6a11cb;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .muted-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #666;
+            margin-top: 40px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .admin-panel {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .admin-btn {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 8px;
+            background: #6a11cb;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .admin-btn:hover {
+            background: #5a0db9;
+        }
+        
+        .liked {
+            color: #ff7e5f !important;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>鹞石中学表白墙</h1>
+                <p>分享心声，传递温暖</p>
+            </div>
+            <div class="user-actions">
+                <button class="btn" id="profile-btn">个人资料</button>
+                <button class="btn btn-primary" id="logout-btn">退出登录</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="main-content">
+            <div class="post-form">
+                <textarea class="post-input" placeholder="分享你的心声..."></textarea>
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <button class="icon-btn">
+                            <i>📷</i> 图片
+                        </button>
+                        <button class="icon-btn">
+                            <i>😊</i> 表情
+                        </button>
+                    </div>
+                    <button class="btn btn-primary" id="post-btn">发布</button>
+                </div>
+            </div>
+            
+            <div class="posts" id="posts-container">
+                <!-- 帖子将通过JS动态生成 -->
+            </div>
+        </div>
+        
+        <div class="sidebar">
+            <h2 class="section-title">精华帖子</h2>
+            <div id="featured-posts">
+                <!-- 精华帖子将通过JS动态生成 -->
+            </div>
+            
+            <div id="admin-panel" style="display: none;">
+                <h2 class="section-title">管理面板</h2>
+                <button class="admin-btn" id="manage-posts">帖子管理</button>
+                <button class="admin-btn" id="manage-users">用户管理</button>
+                <button class="admin-btn" id="set-featured">设置精华</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>by 2025届904班周文博同学，QQ:3637457102</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const postsContainer = document.getElementById('posts-container');
+            const featuredPostsContainer = document.getElementById('featured-posts');
+            const adminPanel = document.getElementById('admin-panel');
+            const logoutBtn = document.getElementById('logout-btn');
+            const postBtn = document.getElementById('post-btn');
+            const postInput = document.querySelector('.post-input');
+            
+            // 检查登录状态
+            if (!currentUser.username) {
+                alert('请先登录！');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // 显示管理员面板
+            if (currentUser.role === 'admin' || currentUser.role === 'superadmin') {
+                adminPanel.style.display = 'block';
+            }
+            
+            // 退出登录
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            });
+            
+            // 发布帖子
+            postBtn.addEventListener('click', function() {
+                if (currentUser.muted) {
+                    alert('您已被禁言，无法发布帖子！');
+                    return;
+                }
+                
+                const content = postInput.value.trim();
+                if (content === '') {
+                    alert('帖子内容不能为空！');
+                    return;
+                }
+                
+                // 创建新帖子
+                const newPost = {
+                    id: Date.now().toString(),
+                    author: currentUser.username,
+                    content: content,
+                    timestamp: new Date().toISOString(),
+                    likes: 0,
+                    likedBy: [], // 存储点赞用户的数组
+                    comments: [],
+                    isFeatured: false,
+                    image: null
+                };
+                
+                // 保存帖子
+                let posts = JSON.parse(localStorage.getItem('posts') || '[]');
+                posts.unshift(newPost);
+                localStorage.setItem('posts', JSON.stringify(posts));
+                
+                // 清空输入框
+                postInput.value = '';
+                
+                // 重新渲染帖子
+                renderPosts();
+                alert('发布成功！');
+            });
+            
+            // 渲染帖子
+            function renderPosts() {
+                let posts = JSON.parse(localStorage.getItem('posts') || '[]');
+                postsContainer.innerHTML = '';
+                featuredPostsContainer.innerHTML = '';
+                
+                // 分离精华帖和普通帖
+                const featuredPosts = posts.filter(post => post.isFeatured);
+                const normalPosts = posts.filter(post => !post.isFeatured);
+                
+                // 渲染精华帖到侧边栏
+                if (featuredPosts.length > 0) {
+                    featuredPosts.forEach(post => {
+                        const postElement = createPostElement(post, true);
+                        featuredPostsContainer.appendChild(postElement);
+                    });
+                } else {
+                    featuredPostsContainer.innerHTML = '<p>暂无精华帖子</p>';
+                }
+                
+                // 渲染所有帖子到主区域（精华帖置顶）
+                [...featuredPosts, ...normalPosts].forEach(post => {
+                    const postElement = createPostElement(post, false);
+                    postsContainer.appendChild(postElement);
+                });
+            }
+            
+            // 创建帖子元素
+            function createPostElement(post, isCompact) {
+                const postEl = document.createElement('div');
+                postEl.className = 'post';
+                
+                // 确保likedBy数组存在
+                if (!post.likedBy) {
+                    post.likedBy = [];
+                }
+                
+                // 检查当前用户是否已点赞
+                const isLiked = post.likedBy.includes(currentUser.username);
+                
+                // 获取作者信息
+                const authorData = JSON.parse(localStorage.getItem('user_' + post.author) || '{}');
+                
+                postEl.innerHTML = `
+                    <div class="post-header">
+                        <div class="user-info">
+                            <div class="avatar">${post.author.charAt(0)}</div>
+                            <div class="user-details">
+                                <div class="username">
+                                    ${post.author}
+                                    ${authorData.role === 'admin' || authorData.role === 'superadmin' ? '<span class="admin-badge">管理员</span>' : ''}
+                                    ${authorData.muted ? '<span class="muted-badge">已禁言</span>' : ''}
+                                    ${post.isFeatured ? '<span class="featured-badge">精华</span>' : ''}
+                                </div>
+                                <div class="timestamp">${new Date(post.timestamp).toLocaleString()}</div>
+                            </div>
+                        </div>
+                        ${(currentUser.role === 'admin' || currentUser.role === 'superadmin') ? 
+                        `<div class="post-actions">
+                            <button class="icon-btn delete-btn" data-id="${post.id}">删除</button>
+                            ${!post.isFeatured ? `<button class="icon-btn feature-btn" data-id="${post.id}">加精</button>` : ''}
+                        </div>` : ''}
+                    </div>
+                    <div class="post-content">${post.content}</div>
+                    ${post.image ? `<img src="${post.image}" class="post-image">` : ''}
+                    <div class="post-footer">
+                        <div class="post-stats">
+                            <span class="likes">${post.likes} 赞</span>
+                            <span class="comments">${post.comments.length} 评论</span>
+                        </div>
+                        <div class="post-actions">
+                            <button class="icon-btn like-btn ${isLiked ? 'liked' : ''}" data-id="${post.id}">
+                                <i>${isLiked ? '❤️' : '👍'}</i> ${isLiked ? '已赞' : '赞'}
+                            </button>
+                            <button class="icon-btn comment-btn" data-id="${post.id}">
+                                <i>💬</i> 评论
+                            </button>
+                            <button class="icon-btn share-btn" data-id="${post.id}">
+                                <i>📤</i> 分享
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                // 添加事件监听器
+                if (!isCompact) {
+                    const likeBtn = postEl.querySelector('.like-btn');
+                    likeBtn.addEventListener('click', function() {
+                        let posts = JSON.parse(localStorage.getItem('posts') || '[]');
+                        const postIndex = posts.findIndex(p => p.id === post.id);
+                        
+                        if (postIndex !== -1) {
+                            // 确保likedBy数组存在
+                            if (!posts[postIndex].likedBy) {
+                                posts[postIndex].likedBy = [];
+                            }
+                            
+                            const userIndex = posts[postIndex].likedBy.indexOf(currentUser.username);
+                            
+                            if (userIndex === -1) {
+                                // 用户未点赞，添加点赞
+                                posts[postIndex].likes++;
+                                posts[postIndex].likedBy.push(currentUser.username);
+                                likeBtn.innerHTML = '<i>❤️</i> 已赞';
+                                likeBtn.classList.add('liked');
+                            } else {
+                                // 用户已点赞，取消点赞
+                                posts[postIndex].likes--;
+                                posts[postIndex].likedBy.splice(userIndex, 1);
+                                likeBtn.innerHTML = '<i>👍</i> 赞';
+                                likeBtn.classList.remove('liked');
+                            }
+                            
+                            localStorage.setItem('posts', JSON.stringify(posts));
+                            
+                            // 更新点赞计数显示
+                            postEl.querySelector('.likes').textContent = `${posts[postIndex].likes} 赞`;
+                        }
+                    });
+                    
+                    // 管理员功能
+                    if (currentUser.role === 'admin' || currentUser.role === 'superadmin') {
+                        const deleteBtn = postEl.querySelector('.delete-btn');
+                        deleteBtn.addEventListener('click', function() {
+                            if (confirm('确定要删除这条帖子吗？')) {
+                                let posts = JSON.parse(localStorage.getItem('posts') || '[]');
+                                posts = posts.filter(p => p.id !== post.id);
+                                localStorage.setItem('posts', JSON.stringify(posts));
+                                renderPosts();
+                            }
+                        });
+                        
+                        const featureBtn = postEl.querySelector('.feature-btn');
+                        if (featureBtn) {
+                            featureBtn.addEventListener('click', function() {
+                                let posts = JSON.parse(localStorage.getItem('posts') || '[]');
+                                const postIndex = posts.findIndex(p => p.id === post.id);
+                                if (postIndex !== -1) {
+                                    posts[postIndex].isFeatured = true;
+                                    localStorage.setItem('posts', JSON.stringify(posts));
+                                    renderPosts();
+                                }
+                            });
+                        }
+                    }
+                }
+                
+                return postEl;
+            }
+            
+            // 初始化渲染
+            renderPosts();
+            
+            // 如果没有帖子，添加一些示例帖子
+            let posts = JSON.parse(localStorage.getItem('posts') || '[]');
+            if (posts.length === 0) {
+                const samplePosts = [
+                    {
+                        id: '1',
+                        author: '2025届904班周文博同学',
+                        content: '欢迎使用鹞石中学表白墙！在这里你可以分享心声，表达情感。',
+                        timestamp: new Date().toISOString(),
+                        likes: 42,
+                        likedBy: ['2025届904班周文博同学'],
+                        comments: [],
+                        isFeatured: true,
+                        image: null
+                    },
+                    {
+                        id: '2',
+                        author: '2024届901班李同学',
+                        content: '感谢学校为我们提供了这么好的交流平台！',
+                        timestamp: new Date(Date.now() - 86400000).toISOString(),
+                        likes: 28,
+                        likedBy: ['2024届901班李同学'],
+                        comments: [],
+                        isFeatured: false,
+                        image: null
+                    }
+                ];
+                
+                localStorage.setItem('posts', JSON.stringify(samplePosts));
+                renderPosts();
+            }
+        });
+    </script>
+</body>
+</html>
